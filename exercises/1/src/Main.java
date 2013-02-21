@@ -28,7 +28,6 @@ class Main {
 				else if (i == 1) {
 					result = b;
 				} else {
-
 					long i_1 = b;
 					long i_2 = a;
 
