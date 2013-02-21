@@ -11,12 +11,17 @@ public class A1Test {
 	@Test
 	public void testUebung1() {
 		
+		// get \r\n oder \r für mac oder so ähnlich
+		String separator = System.getProperty("line.separator");
+
+		
 		/* ****************************
-		/* Modify here */
-		/* ****************************/
-		String input = "2\n20 0 1 1 1\n22 5 10 1 -1";
-		String expectedOutput = "6765\n-10";
-		/* **************************/
+		 * /* Modify here
+		 */
+		/* *************************** */
+		String input = "2" + separator + "20 0 1 1 1" + separator + "22 5 10 1 -1";
+		String expectedOutput = "6765" + separator + "-10" + separator;
+		/* ************************* */
 		
 		// Input stuff
 		byte[] inputData = input.getBytes();
