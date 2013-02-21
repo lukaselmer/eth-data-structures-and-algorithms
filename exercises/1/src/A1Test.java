@@ -42,7 +42,7 @@ public class A1Test {
 		/* Modify here */
 		/* ****************************/
 		// Call stuff
-		A1.main(new String[0]);
+		Main.main(new String[0]);
 		/* **************************/
 		
 		// validate stuff
