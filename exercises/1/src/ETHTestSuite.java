@@ -11,7 +11,7 @@ import org.junit.runners.Parameterized.Parameters;
 
 @RunWith(Parameterized.class)
 public class ETHTestSuite {
-	@Parameters
+	@Parameters // Problem: old junit version has no name parameter for @Parameters decoration :-(
 	public static List<File[]> data() {
 		Set<ETHTestCase> inFiles = ETHTestHelper.getETHTestCases();
 		
