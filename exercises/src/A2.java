@@ -2,46 +2,60 @@ import java.util.Scanner;
 
 class A2 {
 
-	static int lines, i, a, b, c, d;
-	static long result, i_1, i_2;
-
 	public static void main(String[] strings) {
 		Scanner sc = new Scanner(System.in);
 
 		try {
 
-			lines = sc.nextInt();
+			int lines = sc.nextInt();
 
 			for (int j = 0; j < lines; ++j) {
-				i = sc.nextInt();
-				a = sc.nextInt();
-				b = sc.nextInt();
-				c = sc.nextInt();
-				d = sc.nextInt();
+				int i = sc.nextInt();
 
-				result = 1;
-
-				if (i == 0) {
-					result = a;
+				int[] nums = new int[i];
+				for (int k = 0; k < i; ++k) {
+					nums[k] = sc.nextInt();
 				}
-
-				else if (i == 1) {
-					result = b;
-				} else {
-					long i_1 = b;
-					long i_2 = a;
-
-					for (int x = 2; x <= i; x++) {
-						result = c * i_1 + d * i_2;
-						i_2 = i_1;
-						i_1 = result;
-					}
-				}
-				System.out.println(result);
+				int out = maxSubarray(nums);
+				System.out.println(out);
 			}
 
 		} finally {
 			sc.close();
 		}
+	}
+
+	private static int maxSubarray(int[] a) {
+		int max_so_far = 0;
+		int max_ending_here = 0;
+		int startIndex = 0;
+		int endIndex = -1;
+
+		for (int i = 0; i < a.length; i++) {
+			if (0 > max_ending_here + a[i]) {
+				startIndex = i + 1;
+				max_ending_here = 0;
+			} else {
+				max_ending_here += a[i];
+			}
+
+			if (max_ending_here > max_so_far) {
+				max_so_far = max_ending_here;
+				endIndex = i;
+			}
+		}
+		return max_so_far;
+
+		/*if (startIndex <= endIndex) {
+			return max_so_far;
+			/*int sum = 0;
+			for(int i = startIndex; i<=endIndex; ++i){
+				sum += a[i];
+			}* /
+			//return Arrays.copyOfRange(a, startIndex, endIndex);
+		}
+
+		return max_so_far;*/
+
 	}
 }
