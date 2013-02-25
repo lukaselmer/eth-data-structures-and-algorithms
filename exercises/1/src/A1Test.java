@@ -10,14 +10,17 @@ import java.util.Set;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.sun.tools.javac.util.Pair;
 
 public class A1Test {
 
-	@Test
+	/*@Test
 	public void testUebung1() {
 
 		// get \r\n oder \r für mac oder so ähnlich
@@ -26,11 +29,11 @@ public class A1Test {
 		/* ****************************
 		 * /* Modify here
 		 */
-		/* *************************** */
+		/* *************************** * /
 		String input = "2" + separator + "20 0 1 1 1" + separator
 				+ "22 5 10 1 -1";
 		String expectedOutput = "6765" + separator + "-10" + separator;
-		/* ************************* */
+		/* ************************* * /
 
 		// Input stuff
 		byte[] inputData = input.getBytes();
@@ -49,10 +52,10 @@ public class A1Test {
 		/* ****************************
 		 * /* Modify here
 		 */
-		/* *************************** */
+		/* *************************** * /
 		// Call stuff
 		Main.main(new String[0]);
-		/* ************************* */
+		/* ************************* * /
 
 		// validate stuff
 		System.setOut(oldOut);
@@ -66,15 +69,15 @@ public class A1Test {
 		}
 		Assert.assertEquals(expectedOutput, output);
 
-	}
+	}*/
 	
-	@Test
-	public void testGenericInputFiles() throws IOException {
+	/*public void testGenericInputFiles() throws IOException {
 		Set<ETHTestCase> tests = getETHTestCases();
 		for (ETHTestCase test : tests) {
+			addTest(test);
 			// TODO evaluate tests, check results
 		}
-	}
+	}*/
 
 	private Set<ETHTestCase> getETHTestCases() {
 		Set<ETHTestCase> inFiles = new HashSet<ETHTestCase>();
