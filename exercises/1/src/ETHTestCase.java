@@ -1,14 +1,6 @@
 import java.io.File;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.AllTests;
-import org.junit.runners.Parameterized;
-
-import junit.framework.AssertionFailedError;
-import junit.framework.Test;
-import junit.framework.TestResult;
-
-public class ETHTestCase implements Test {
+public class ETHTestCase {
 
 	private File out;
 	private File in;
@@ -25,9 +17,7 @@ public class ETHTestCase implements Test {
 		this.in = new File(in.getPath());
 		out = new File(in.getPath().replaceFirst(".in$", ".out"));
 		if (!out.exists())
-			throw new RuntimeException(
-					"For every .in file, a .out file has to exist. Problem: "
-							+ out + " does not exist.");
+			throw new RuntimeException("For every .in file, a .out file has to exist. Problem: " + out + " does not exist.");
 	}
 
 	public static boolean isInFile(File in) {
@@ -35,16 +25,12 @@ public class ETHTestCase implements Test {
 	}
 
 	@Override
-	public int countTestCases() {
-		return 1;
+	public String toString() {
+		return getDir().getName() + " " + in.getName();
 	}
 
-	@Override
-	public void run(TestResult res) {
-		// TODO: implement this
-		//res.addFailure(this, new AssertionFailedError("blub"));
-		res.startTest(this);
-		res.endTest(this);
+	public File getDir() {
+		return in.getParentFile();
 	}
 
 }
