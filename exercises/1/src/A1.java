@@ -1,10 +1,10 @@
 import java.util.Scanner;
 
-class Main {
+class A1 {
 
 	static int lines, i, a, b, c, d;
-	static long result, i_1, i_2; 
-	
+	static long result, i_1, i_2;
+
 	public static void main(String[] strings) {
 		Scanner sc = new Scanner(System.in);
 
