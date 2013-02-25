@@ -71,7 +71,6 @@ public class A1Test {
 	@Test
 	public void testGenericInputFiles() throws IOException {
 		Set<ETHTestCase> tests = getETHTestCases();
-		
 		for (ETHTestCase test : tests) {
 			// TODO evaluate tests, check results
 		}
