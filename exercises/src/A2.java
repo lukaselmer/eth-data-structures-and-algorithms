@@ -45,17 +45,5 @@ class A2 {
 			}
 		}
 		return max_so_far;
-
-		/*if (startIndex <= endIndex) {
-			return max_so_far;
-			/*int sum = 0;
-			for(int i = startIndex; i<=endIndex; ++i){
-				sum += a[i];
-			}* /
-			//return Arrays.copyOfRange(a, startIndex, endIndex);
-		}
-
-		return max_so_far;*/
-
 	}
 }
