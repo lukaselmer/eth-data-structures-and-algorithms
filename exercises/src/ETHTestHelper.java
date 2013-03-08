@@ -10,6 +10,9 @@ public class ETHTestHelper {
 		for (File assignment : directory.listFiles()) {
 			if (!assignment.isDirectory())
 				continue;
+			String skipMarkerPath = assignment.getAbsolutePath() + File.separator + "skip.txt";
+			if(new File(skipMarkerPath).exists())
+				continue;
 			for (File in : assignment.listFiles()) {
 				if (ETHTestCase.isInFile(in))
 					inFiles.add(new ETHTestCase(in));

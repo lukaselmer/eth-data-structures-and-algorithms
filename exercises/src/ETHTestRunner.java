@@ -80,7 +80,7 @@ public class ETHTestRunner {
 	private void printError(String expected, String actual) {
 		onErrorLog.flush();
 		System.out.print(onErrorLogOut);
-		System.err.format("You failed: expected: <%s>, but was: <%s>%n%n", expected, actual);
+		System.err.format("You failed: expected:\n<%s>, but was:\n<%s>%n%n", expected, actual);
 	}
 
 	private void log(String nextLine) {
