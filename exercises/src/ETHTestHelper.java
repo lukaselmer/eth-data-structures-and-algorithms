@@ -8,17 +8,20 @@ public class ETHTestHelper {
 		Set<ETHTestCase> inFiles = new HashSet<ETHTestCase>();
 
 		for (File assignment : directory.listFiles()) {
-			if (!assignment.isDirectory())
+			if(!isValidTestFolder(assignment))
 				continue;
-			String skipMarkerPath = assignment.getAbsolutePath() + File.separator + "skip.txt";
-			if(new File(skipMarkerPath).exists())
-				continue;
+			
 			for (File in : assignment.listFiles()) {
 				if (ETHTestCase.isInFile(in))
 					inFiles.add(new ETHTestCase(in));
 			}
 		}
 		return inFiles;
+	}
+
+	private static boolean isValidTestFolder(File assignment) {
+		String skipMarkerPath = assignment.getAbsolutePath() + File.separator + "skip.txt";
+		return assignment.isDirectory() || !new File(skipMarkerPath).exists();
 	}
 
 }
