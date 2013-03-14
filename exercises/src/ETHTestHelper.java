@@ -8,9 +8,11 @@ public class ETHTestHelper {
 		Set<ETHTestCase> inFiles = new HashSet<ETHTestCase>();
 
 		for (File assignment : directory.listFiles()) {
-			if(!isValidTestFolder(assignment))
+			if (!isValidTestFolder(assignment))
 				continue;
-			
+			if (assignment.listFiles() == null)
+				continue;
+
 			for (File in : assignment.listFiles()) {
 				if (ETHTestCase.isInFile(in))
 					inFiles.add(new ETHTestCase(in));
@@ -20,7 +22,8 @@ public class ETHTestHelper {
 	}
 
 	private static boolean isValidTestFolder(File assignment) {
-		String skipMarkerPath = assignment.getAbsolutePath() + File.separator + "skip.txt";
+		String skipMarkerPath = assignment.getAbsolutePath() + File.separator
+				+ "skip.txt";
 		return assignment.isDirectory() || !new File(skipMarkerPath).exists();
 	}
 
