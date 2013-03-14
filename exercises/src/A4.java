@@ -31,13 +31,10 @@ class A4 {
 			int mod = k % m;
 			int position = mod;
 			int collisions = 0;
-			while (values[position] != 0) {
+			while (values[position] != 0)
 				position = positiveMod(mod - probing.probe(++collisions, k, m), m);
-				while (position < 0)
-					position += m;
-			}
-
-			this.collisions += collisions; // > 0 ? 1 : 0;
+			
+			this.collisions += collisions;
 			return position;
 		}
 
