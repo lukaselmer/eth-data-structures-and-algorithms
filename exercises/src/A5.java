@@ -1,5 +1,3 @@
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Scanner;
 
 class A5 {
@@ -27,26 +25,22 @@ class A5 {
 		}
 
 		public int visit() {
-			return visit(0);
-		}
-
-		public int visit(int depth) {
 			// pre_order();
-			int depth_left = depth, depth_right = depth;
+			int depth_left = -1, depth_right = -1;
 			if (left != null)
-				depth_left = left.visit(depth + 1);
+				depth_left = left.visit();
 			// in_order();
 			if (right != null)
-				depth_right = right.visit(depth + 1);
-			
-			post_order(depth, depth_left, depth_right);
-			
-			return Math.max(depth_left, depth_right);
+				depth_right = right.visit();
+
+			int depth = Math.max(depth_left, depth_right) + 1;
+			post_order(depth + 1, depth_left + 1, depth_right + 1);
+
+			return depth;
 		}
 
 		private void post_order(int depth, int depth_left, int depth_right) {
-			System.out.print(value + " " + depth_left + " " + depth_right);
-			if(depth > 0) System.out.print(" ");
+			System.out.print(value + " " + depth_left + " " + depth_right + " ");
 		}
 
 		private boolean should_insert_left(int new_value) {
@@ -62,37 +56,18 @@ class A5 {
 			int lines = sc.nextInt();
 
 			for (int j = 0; j < lines; ++j) {
-				int m = sc.nextInt();
 				int n = sc.nextInt();
 
-				List<Integer> values = new LinkedList<Integer>();
-				for (int k = 0; k < n; ++k) {
-					values.add(sc.nextInt());
+				Node tree = new Node(sc.nextInt());
+				for (int k = 0; k < n - 1; ++k) {
+					tree.insert(sc.nextInt());
 				}
-
-				print(new HashMap(m, values, new LinearProbing()));
-				print(new HashMap(m, values, new QuadraticProbing()));
-				print(new HashMap(m, values, new DoubleHashing()));
+				tree.visit();
+				System.out.println();
 			}
 
 		} finally {
 			sc.close();
-		}
-	}
-
-	private static void print(HashMap hashMap) {
-		System.out.print(hashMap.getCollisions() + " ");
-		printArray(hashMap.getValues());
-		System.out.println();
-	}
-
-	private static void printArray(int[] values) {
-		int iMax = values.length - 1;
-		for (int i = 0;; i++) {
-			System.out.print(values[i]);
-			if (i == iMax)
-				return;
-			System.out.print(" ");
 		}
 	}
 }
