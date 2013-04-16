@@ -24,7 +24,6 @@ public class ETHTestHelper {
 
 	private static boolean isValidTestFolder(File assignment) {
 		String skipMarkerPath = assignment.getAbsolutePath() + File.separator + "skip.txt";
-		System.out.println(assignment.getAbsolutePath());
 		return assignment.isDirectory() && !new File(skipMarkerPath).exists();
 	}
 
