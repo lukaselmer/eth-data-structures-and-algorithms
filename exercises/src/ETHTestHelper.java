@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,9 +23,9 @@ public class ETHTestHelper {
 	}
 
 	private static boolean isValidTestFolder(File assignment) {
-		String skipMarkerPath = assignment.getAbsolutePath() + File.separator
-				+ "skip.txt";
-		return assignment.isDirectory() || !new File(skipMarkerPath).exists();
+		String skipMarkerPath = assignment.getAbsolutePath() + File.separator + "skip.txt";
+		System.out.println(assignment.getAbsolutePath());
+		return assignment.isDirectory() && !new File(skipMarkerPath).exists();
 	}
 
 }
