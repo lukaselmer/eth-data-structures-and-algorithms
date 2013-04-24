@@ -2,19 +2,23 @@ import java.io.PrintStream;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 class A9 {
 
 	private static class Edge {
 
-		private Node node;
-		private int c;
+		private int u, v;
+		protected Integer weight;
 
-		public Edge(Node node, int c) {
-			this.node = node;
-			this.c = c;
+		public Edge(int u, int v, int c) {
+			this.u = u;
+			this.v = v;
+			weight = c;
 		}
 
 	}
@@ -22,33 +26,57 @@ class A9 {
 	private static class Node {
 		private List<Edge> edges = new ArrayList();
 
-		public void addEdge(Node node, int c) {
-			edges.add(new Edge(node, c));
-		}
 	}
 
 	private static class Graph {
 
-		private Node[] a;
+		private List<Node> nodes;
+		private List<Graph> trees;
+		private SortedSet<Edge> edges;
 
-		public Graph(int n) {
-			a = new Node[n];
-			for (int i = 0; i < a.length; i++) {
-				a[i] = new Node();
+		public Graph(int n, int m) {
+			nodes = new ArrayList<Node>(n);
+
+			Comparator<Edge> cmp = new Comparator<Edge>() {
+				@Override
+				public int compare(Edge a, Edge b) {
+					return a.weight.compareTo(b.weight);
+				}
+			};
+
+			edges = new TreeSet<Edge>(cmp);
+			for (int i = 0; i < n; i++) {
+				nodes.add(new Node());
 			}
 		}
 
+		public Graph(Node node) {
+			nodes = new ArrayList<Node>();
+			nodes.add(node);
+		}
+
 		public void addEdge(int u, int v, int c) {
-			a[u].addEdge(a[v], c);
-			a[v].addEdge(a[u], c);
+			edges.add(new Edge(u, v, c));
 		}
 
 		public int CalculateMstCost() {
+			trees = new ArrayList<Graph>(nodes.size());
+			for (int i = 0; i < nodes.size(); i++) {
+				trees.add(new Graph(nodes.get(i)));
+			}
+			for (Edge e : edges) {
+
+			}
+
+			// foreach (u, v) ordered by weight(u, v), increasing:
+			// if FIND-SET(u) ≠ FIND-SET(v):
+			// A = A ∪ {(u, v)}
+			// UNION(u, v)
+
 			// TODO implement this
-			return 11315;
+			return 0;
 		}
 
-		
 	}
 
 	public static void main(String[] args) {
@@ -61,7 +89,7 @@ class A9 {
 				int n = sc.nextInt();
 				int m = sc.nextInt();
 
-				Graph g = new Graph(n);
+				Graph g = new Graph(n, m);
 
 				for (int k = 0; k < m; k++) {
 					int u = sc.nextInt() - 1;
@@ -69,7 +97,7 @@ class A9 {
 					int c = sc.nextInt();
 					g.addEdge(u, v, c);
 				}
-				
+
 				System.out.println(g.CalculateMstCost());
 
 			}
