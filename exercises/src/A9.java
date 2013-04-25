@@ -1,19 +1,14 @@
-import java.io.PrintStream;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
+import java.util.LinkedList;
 import java.util.Scanner;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 class A9 {
 
 	private static class Edge {
 
 		private int u, v;
-		protected Integer weight;
+		protected int weight;
 
 		public Edge(int u, int v, int c) {
 			this.u = u;
@@ -21,60 +16,65 @@ class A9 {
 			weight = c;
 		}
 
-	}
-
-	private static class Node {
-		private List<Edge> edges = new ArrayList();
-
+		@Override
+		public String toString() {
+			return "[u:" + (u + 1) + ",v:" + (v + 1) + ",weight:" + weight + "]";
+		}
 	}
 
 	private static class Graph {
-
-		private List<Node> nodes;
-		private List<Graph> trees;
-		private SortedSet<Edge> edges;
+		private int[] sets;
+		private Edge[] edges;
+		private LinkedList<Edge> chosenEdges = new LinkedList<Edge>();
+		
+		private Comparator<Edge> cmp = new Comparator<Edge>() {
+			@Override
+			public int compare(Edge a, Edge b) {
+				return a.weight - b.weight;
+			}
+		};
 
 		public Graph(int n, int m) {
-			nodes = new ArrayList<Node>(n);
-
-			Comparator<Edge> cmp = new Comparator<Edge>() {
-				@Override
-				public int compare(Edge a, Edge b) {
-					return a.weight.compareTo(b.weight);
-				}
-			};
-
-			edges = new TreeSet<Edge>(cmp);
+			sets = new int[n];
 			for (int i = 0; i < n; i++) {
-				nodes.add(new Node());
+				sets[i] = i;
 			}
+
+			edges = new Edge[m];
 		}
 
-		public Graph(Node node) {
-			nodes = new ArrayList<Node>();
-			nodes.add(node);
-		}
-
-		public void addEdge(int u, int v, int c) {
-			edges.add(new Edge(u, v, c));
+		public void addEdge(int index, int u, int v, int c) {
+			edges[index] = new Edge(u, v, c);
 		}
 
 		public int CalculateMstCost() {
-			trees = new ArrayList<Graph>(nodes.size());
-			for (int i = 0; i < nodes.size(); i++) {
-				trees.add(new Graph(nodes.get(i)));
-			}
+			Arrays.sort(edges, cmp);
+			
 			for (Edge e : edges) {
-
+				if (!isInSameSet(e.u, e.v)) {
+					chosenEdges.add(e);
+					mergeSets(e.u, e.v);
+				}
 			}
 
-			// foreach (u, v) ordered by weight(u, v), increasing:
-			// if FIND-SET(u) ≠ FIND-SET(v):
-			// A = A ∪ {(u, v)}
-			// UNION(u, v)
+			int sum = 0;
+			for (Edge e : chosenEdges) {
+				sum += e.weight;
+			}
 
-			// TODO implement this
-			return 0;
+			return sum;
+		}
+
+		private void mergeSets(int u, int v) {
+			int toReplace = sets[v];
+			for (int i = 0; i < sets.length; i++) {
+				if (sets[i] == toReplace)
+					sets[i] = sets[u];
+			}
+		}
+
+		private boolean isInSameSet(int u, int v) {
+			return sets[u] == sets[v];
 		}
 
 	}
@@ -95,7 +95,7 @@ class A9 {
 					int u = sc.nextInt() - 1;
 					int v = sc.nextInt() - 1;
 					int c = sc.nextInt();
-					g.addEdge(u, v, c);
+					g.addEdge(k, u, v, c);
 				}
 
 				System.out.println(g.CalculateMstCost());
