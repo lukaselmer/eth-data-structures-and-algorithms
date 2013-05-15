@@ -1,55 +1,96 @@
+import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 
 class A10 {
 
-	private static class Edge {
+	// Implementation algorithm from http://en.wikipedia.org/wiki/Edmonds%E2%80%93Karp_algorithm
+	
+	private static class Ret {
 
-		private int u, v;
-		protected int weight;
+		public int m;
+		public int[] P;
 
-		public Edge(int u, int v, int c) {
-			this.u = u;
-			this.v = v;
-			weight = c;
-		}
-
-		@Override
-		public String toString() {
-			return "[u:" + (u + 1) + ",v:" + (v + 1) + ",weight:" + weight + "]";
+		public Ret(int m, int[] p) {
+			this.m = m;
+			this.P = p;
 		}
 	}
 
 	private static class Graph {
-		private int[] sets;
-		private Edge[] edges;
-		private LinkedList<Edge> chosenEdges = new LinkedList<Edge>();
-		
-		private Comparator<Edge> cmp = new Comparator<Edge>() {
-			@Override
-			public int compare(Edge a, Edge b) {
-				return a.weight - b.weight;
-			}
-		};
+		private int n;
+		private int f = 0;
+		private int[][] C;
+		private int[][] F;
+		private LinkedList<Integer>[] E;
 
 		public Graph(int n, int m) {
-			sets = new int[n];
+			this.n = n;
+			E = new LinkedList[n];
+			F = new int[n][];
+			C = new int[n][];
 			for (int i = 0; i < n; i++) {
-				sets[i] = i;
+				E[i] = new LinkedList<Integer>();
+				F[i] = new int[n];
+				C[i] = new int[n];
 			}
-
-			edges = new Edge[m];
 		}
 
 		public void addEdge(int index, int u, int v, int c) {
-			edges[index] = new Edge(u, v, c);
+			C[u][v] = c;
+			E[u].add(v);
 		}
 
-		public char[] CalculateMaxFlow() {
-			// TODO Auto-generated method stub
-			return null;
+		public int CalculateMaxFlow() {
+			while (true) {
+				Ret ret = BreadthFirstSearch();
+				int m = ret.m;
+				int[] P = ret.P;
+
+				if (ret.m == 0)
+					break;
+
+				f = f + m;
+
+				int v = n - 1;
+				while (v != 0) {
+					int u = P[v];
+					F[u][v] = F[u][v] + m;
+					F[v][u] = F[v][u] - m;
+					v = u;
+				}
+			}
+
+			return f;
+		}
+
+		private Ret BreadthFirstSearch() {
+			int[] P = new int[n];
+			int[] M = new int[n];
+			Arrays.fill(P, -1);
+			P[0] = -2;
+			M[0] = Integer.MAX_VALUE;
+			Queue<Integer> Q = new ArrayDeque<Integer>();
+			Q.add(0);
+			while (Q.size() > 0) {
+				int u = Q.remove();
+				for (Integer v : E[u]) {
+					if (C[u][v] - F[u][v] > 0 && P[v] == -1) {
+						P[v] = u;
+						M[v] = Math.min(M[u], C[u][v] - F[u][v]);
+						if (v != n - 1) {
+							Q.add(v);
+						} else {
+							return new Ret(M[n - 1], P);
+						}
+					}
+				}
+			}
+			return new Ret(0, P);
 		}
 
 	}
