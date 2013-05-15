@@ -24,73 +24,77 @@ class A10 {
 	private static class Graph {
 		private int n;
 		private int f = 0;
-		private int[][] C;
-		private int[][] F;
-		private LinkedList<Integer>[] E;
+		private int[][] capacity;
+		private int[][] currentFlow;
+		private LinkedList<Integer>[] neighbours;
+		private int m;
+		private int[] parentsOfCurrentPath;
+		private int[] capacityOfCurrentPath;
 
 		public Graph(int n, int m) {
 			this.n = n;
-			E = new LinkedList[n];
-			F = new int[n][];
-			C = new int[n][];
+			neighbours = new LinkedList[n];
+			currentFlow = new int[n][];
+			capacity = new int[n][];
+			parentsOfCurrentPath = new int[n];
+			capacityOfCurrentPath = new int[n];
+			
 			for (int i = 0; i < n; i++) {
-				E[i] = new LinkedList<Integer>();
-				F[i] = new int[n];
-				C[i] = new int[n];
+				neighbours[i] = new LinkedList<Integer>();
+				currentFlow[i] = new int[n];
+				capacity[i] = new int[n];
 			}
 		}
 
 		public void addEdge(int index, int u, int v, int c) {
-			C[u][v] = c;
-			E[u].add(v);
+			capacity[u][v] = c;
+			neighbours[u].add(v);
 		}
 
 		public int CalculateMaxFlow() {
 			while (true) {
-				Ret ret = BreadthFirstSearch();
-				int m = ret.m;
-				int[] P = ret.P;
+				BreadthFirstSearch();
 
-				if (ret.m == 0)
+				if (m == 0)
 					break;
 
-				f = f + m;
+				f += m;
 
 				int v = n - 1;
 				while (v != 0) {
-					int u = P[v];
-					F[u][v] = F[u][v] + m;
-					F[v][u] = F[v][u] - m;
+					int u = parentsOfCurrentPath[v];
+					currentFlow[u][v] = currentFlow[u][v] + m;
+					currentFlow[v][u] = currentFlow[v][u] - m;
 					v = u;
 				}
 			}
-
 			return f;
 		}
 
-		private Ret BreadthFirstSearch() {
-			int[] P = new int[n];
-			int[] M = new int[n];
-			Arrays.fill(P, -1);
-			P[0] = -2;
-			M[0] = Integer.MAX_VALUE;
+		private void BreadthFirstSearch() {
+			Arrays.fill(capacityOfCurrentPath, 0);
+			Arrays.fill(parentsOfCurrentPath, -1);
+			parentsOfCurrentPath[0] = -2;
+			capacityOfCurrentPath[0] = Integer.MAX_VALUE;
 			Queue<Integer> Q = new ArrayDeque<Integer>();
 			Q.add(0);
 			while (Q.size() > 0) {
 				int u = Q.remove();
-				for (Integer v : E[u]) {
-					if (C[u][v] - F[u][v] > 0 && P[v] == -1) {
-						P[v] = u;
-						M[v] = Math.min(M[u], C[u][v] - F[u][v]);
+				for (Integer v : neighbours[u]) {
+					if (capacity[u][v] - currentFlow[u][v] > 0 && parentsOfCurrentPath[v] == -1) {
+						parentsOfCurrentPath[v] = u;
+						capacityOfCurrentPath[v] = Math.min(capacityOfCurrentPath[u], capacity[u][v] - currentFlow[u][v]);
 						if (v != n - 1) {
 							Q.add(v);
 						} else {
-							return new Ret(M[n - 1], P);
+							m = capacityOfCurrentPath[n - 1];
+							return;
 						}
 					}
 				}
 			}
-			return new Ret(0, P);
+			m = 0;
+			return;
 		}
 
 	}
